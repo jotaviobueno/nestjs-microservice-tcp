@@ -1,0 +1,46 @@
+{
+  "person": {
+    "welcome": {
+      "subject": "Bem-vindo à Empresa",
+      "preview": "Você está pronto para começar a processar transações ao vivo!",
+      "intro": "Obrigado por enviar os dados da sua conta. Agora você está configurado para aceitar transações ao vivo na nossa plataforma!",
+      "dashboard_info": "Você pode visualizar suas transações, gerenciar sua conta e explorar recursos adicionais diretamente do seu painel de controle.",
+      "dashboard_button": "Acesse seu Painel de Controle",
+      "integration_reminder": "Se a sua configuração ainda não estiver totalmente concluída, nossos guias de integração estão aqui para ajudar.",
+      "api_key_instructions": "Quando estiver pronto para começar o processamento ao vivo, basta alternar de chaves API de teste para chaves API ao vivo. Você pode testar e processar transações ao vivo simultaneamente, então sinta-se à vontade para continuar experimentando enquanto vai ao vivo. Confira nosso resumo sobre os conceitos básicos da conta.",
+      "checklist_reminder": "Para um desempenho ideal, certifique-se de revisar nossa lista de verificação rápida sobre os padrões e as melhores práticas para pagamentos.",
+      "support_message": "Estamos aqui para apoiar você em cada passo. Visite nosso site de suporte para respostas às perguntas mais comuns ou para entrar em contato diretamente.",
+      "signature": "— Sua Equipe da Plataforma de Pagamento",
+      "address": "Plataforma de Pagamento, Rua dos Negócios, 1234, Cidade, Estado, CEP",
+      "dashboard_link": "https://yourplatform.com/dashboard",
+      "docs_link": "https://yourplatform.com/docs",
+      "api_keys_link": "https://yourplatform.com/dashboard/api-keys",
+      "tutorial_link": "https://yourplatform.com/docs/account-basics",
+      "checklist_link": "https://yourplatform.com/docs/checklist",
+      "support_link": "https://yourplatform.com/support"
+    },
+    "updated": {
+      "subject": "Alerta de Atualização de Conta - Empresa",
+      "greeting": "Olá, {firstName}!",
+      "intro": "Estamos entrando em contato para informá-lo que sua conta foi atualizada com sucesso.",
+      "unauthorized_change": "Se você não solicitou essa atualização, por favor, entre em contato conosco imediatamente. Nossa equipe de suporte está disponível para assisti-lo a qualquer momento.",
+      "account_review": "Para revisar suas informações de conta, visite o <a href='https://example.com/conta'>painel de controle</a> no nosso site.",
+      "contact_support": "Se precisar de mais assistência, não hesite em <a href='mailto:support@empresa.com'>contatar nossa equipe de suporte</a>.",
+      "thank_you": "Obrigado,",
+      "team": "Equipe da Empresa",
+      "ps": "P.S. Por questões de segurança, recomendamos que você altere sua senha regularmente. Você pode fazer isso diretamente no seu <a href='https://example.com/conta'>painel de controle</a>."
+    },
+    "deleted": {
+      "subject": "Alerta de Deleção de Conta - Empresa",
+      "greeting": "Olá, {firstName}!",
+      "intro": "Estamos informando que sua conta foi marcada para deleção. Caso não tenha solicitado essa ação, você tem a oportunidade de reverter essa decisão.",
+      "unauthorized_deletion": "Se você não solicitou a deleção de sua conta, por favor, entre em contato conosco imediatamente. Nossa equipe de suporte está pronta para ajudá-lo.",
+      "account_recovery": "Para recuperar sua conta e evitar a deleção, basta clicar no link abaixo dentro de {timeLimit} horas:",
+      "recovery_link": "<a href='https://example.com/recuperar-conta'>Recuperar Conta</a>",
+      "contact_support": "Se você tiver dúvidas ou precisar de assistência adicional, não hesite em <a href='mailto:support@empresa.com'>entrar em contato com nossa equipe de suporte</a>.",
+      "thank_you": "Obrigado,",
+      "team": "Equipe da Empresa",
+      "ps": "P.S. Se você não recuperar sua conta dentro do prazo especificado, a deleção será realizada permanentemente. Recomendamos que aja o quanto antes."
+    }
+  }
+}
