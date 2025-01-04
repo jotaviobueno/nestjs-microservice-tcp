@@ -1,34 +1,43 @@
 import { Injectable } from '@nestjs/common';
-import { OnEvent } from '@nestjs/event-emitter';
+import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import { render } from '@react-email/render';
 import { UserCreated } from '../../templates/user/UserCreated';
 import { EventPayloads, EVENTS_ENUM } from 'src/common/enum';
 import { SESService } from 'src/infrastructure/aws/services/ses.service';
-import { TranslatorService } from 'src/i18n/services/translator.service';
-import { I18N_PATHS } from 'src/common/i18n';
+import { $Enums } from '@prisma/client';
 
 @Injectable()
 export class UserCreatedUseCase {
   constructor(
     private readonly sesService: SESService,
-    private readonly translateService: TranslatorService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
-  @OnEvent(EVENTS_ENUM.user.created)
-  async execute(payload: EventPayloads['user']['created']): Promise<void> {
-    const context = this.translateService.getTranslatedMessages(
-      I18N_PATHS.EMAILS.user.deleted,
-      {
-        args: payload,
-      },
-    );
+  @OnEvent(EVENTS_ENUM.USER_MAIL_CREATED)
+  async execute(payload: EventPayloads['user.mail.created']): Promise<void> {
+    const html = await render(UserCreated(payload.context));
 
-    const html = await render(UserCreated(context));
+    this.sesService
+      .sendMail({
+        to: payload.to,
+        subject: 'Criação de conta',
+        html,
+      })
+      .then(() => {
+        payload.status = $Enums.NotificationStatus.DELIVERED;
+        payload.error = null;
+      })
+      .catch((error) => {
+        payload.status = $Enums.NotificationStatus.FAILED;
+        payload.retryCount = payload.retryCount + 1;
+        payload.error = error;
+      })
+      .finally(() => {
+        if (payload.retryCount >= 3) {
+          payload.status = $Enums.NotificationStatus.CANCELLED;
+        }
 
-    await this.sesService.sendMail({
-      to: payload.email,
-      subject: context.subject,
-      html,
-    });
+        this.eventEmitter.emit(EVENTS_ENUM.UPDATE_NOTIFICATION, payload);
+      });
   }
 }

@@ -23,18 +23,17 @@ enum NotificationType {
 
 model Notification {
   id          String  @id @default(uuid())
-  title       String
+  title       String?
   content     Json?   @default("{}")
   context     Json?   @default("{}")
   recipientId String? @map("recipient_id")
   template    String?
+  to          String
 
-  channel  Channel
-  provider Provider
-  status   NotificationStatus @default(PENDING)
+  channel Channel
+  status  NotificationStatus @default(PENDING)
 
-  metadata Json? @default("{}")
-  error    Json?
+  error Json?
 
   retryCount Int @default(0) @map("retry_count")
 
@@ -43,8 +42,11 @@ model Notification {
   updatedAt   DateTime  @updatedAt @map("updated_at")
   deletedAt   DateTime? @map("deleted_at")
 
-  @@index([status])
-  @@index([recipientId])
+  @@index([status], name: "notification_status_index")
+  @@index([recipientId], name: "notification_recipient_id_index")
+  @@index([channel], name: "notification_channel_index")
+  @@index([template], name: "notification_template_index")
+  @@index([to], name: "notification_to_index")
   @@map("notifications")
 }
 
@@ -54,36 +56,9 @@ enum Channel {
   PUSH
 }
 
-enum Provider {
-  // Email providers
-  SENDGRID
-  AWS_SES
-  MAILGUN
-  SMTP
-
-  // SMS providers
-  TWILIO
-  AWS_SNS
-  MESSAGEBIRD
-  VONAGE
-
-  // Push providers
-  FIREBASE
-  ONESIGNAL
-  EXPO
-}
-
 enum NotificationStatus {
   PENDING
-  PROCESSING
   DELIVERED
   FAILED
   CANCELLED
-}
-
-enum Priority {
-  LOW
-  NORMAL
-  HIGH
-  URGENT
 }

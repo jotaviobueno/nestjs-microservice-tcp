@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { CLIENTS_ENUM } from 'src/common/enums';
+import { environment } from 'src/config';
 
 @Module({
   imports: [
@@ -11,8 +12,8 @@ import { CLIENTS_ENUM } from 'src/common/enums';
         name: CLIENTS_ENUM.NOTIFICATION,
         transport: Transport.TCP,
         options: {
-          host: 'localhost',
-          port: 3001,
+          port: +environment.CLIENTS.NOTIFICATION.PORT,
+          host: environment.CLIENTS.NOTIFICATION.URL,
         },
       },
     ]),

@@ -1,8 +1,20 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { CLIENTS_ENUM } from 'src/common/enums';
-import { CreateUserDto, UpdateUserDto } from 'src/domain/dtos';
-import { UserEntity } from 'src/domain/entities';
+import {
+  CLIENTS_ENUM,
+  NOTIFICATION_CHANNEL_ENUM,
+  NOTIFICATION_TEMPLATES_ENUM,
+} from 'src/common/enums';
+import {
+  CreateNotificationDto,
+  CreateUserDto,
+  UpdateUserDto,
+} from 'src/domain/dtos';
+import {
+  UserEntity,
+  userSelectedField,
+  UserWithoutPasswordEntity,
+} from 'src/domain/entities';
 import { PrismaService } from 'src/infrastructure/database/prisma.service';
 
 @Injectable()
@@ -13,7 +25,7 @@ export class UserService {
     private readonly notificationClient: ClientProxy,
   ) {}
 
-  async create(createDto: CreateUserDto) {
+  async create(createDto: CreateUserDto): Promise<UserWithoutPasswordEntity> {
     const emailAlreadyExists = await this.emailExists(createDto.email);
 
     if (emailAlreadyExists)
@@ -22,9 +34,16 @@ export class UserService {
     const userData = new UserEntity(createDto);
     const user = await this.prismaService.user.create({
       data: userData,
+      select: userSelectedField,
     });
 
-    this.notificationClient.emit('createNotification', user);
+    const notificationData = new CreateNotificationDto({
+      channel: NOTIFICATION_CHANNEL_ENUM.EMAIL,
+      to: user.email,
+      context: user,
+      template: NOTIFICATION_TEMPLATES_ENUM.USER_MAIL_CREATED,
+    });
+    this.notificationClient.emit('createNotification', notificationData);
 
     return user;
   }
@@ -34,6 +53,7 @@ export class UserService {
       where: {
         id,
       },
+      select: userSelectedField,
     });
 
     if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
@@ -42,7 +62,9 @@ export class UserService {
   }
 
   async findAll() {
-    const users = await this.prismaService.user.findMany();
+    const users = await this.prismaService.user.findMany({
+      select: userSelectedField,
+    });
 
     return users;
   }
@@ -60,6 +82,7 @@ export class UserService {
         id: user.id,
       },
       data: userData,
+      select: userSelectedField,
     });
 
     if (!update)
@@ -80,6 +103,7 @@ export class UserService {
       data: {
         deletedAt: new Date(),
       },
+      select: userSelectedField,
     });
 
     if (!remove)
@@ -90,7 +114,7 @@ export class UserService {
     return remove;
   }
 
-  async emailExists(email: string) {
+  private async emailExists(email: string) {
     const user = await this.prismaService.user.count({
       where: {
         email,

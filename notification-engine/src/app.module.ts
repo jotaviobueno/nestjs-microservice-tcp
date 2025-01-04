@@ -3,8 +3,9 @@ import { MailModule } from './infrastructure/mail/mail.module';
 import { EventModule } from './infrastructure/event/event.module';
 import { DatabaseModule } from './infrastructure/database/database.module';
 import { AWSModule } from './infrastructure/aws/aws.module';
-import { TranslatorModule } from './i18n/translator.module';
 import { NotificationModule } from './modules/notification/notification.module';
+import { TaskModule } from './modules/task/task.module';
+import { QueueModule } from './infrastructure/queue/queue.module';
 
 @Module({
   imports: [
@@ -12,8 +13,9 @@ import { NotificationModule } from './modules/notification/notification.module';
     EventModule,
     DatabaseModule,
     AWSModule,
-    TranslatorModule,
     NotificationModule,
+    TaskModule,
+    QueueModule,
   ],
 })
 export class AppModule {}

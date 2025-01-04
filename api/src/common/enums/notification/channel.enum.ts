@@ -1,0 +1,5 @@
+export enum NOTIFICATION_CHANNEL_ENUM {
+  EMAIL = 'EMAIL',
+  SMS = 'SMS',
+  PUSH = 'PUSH',
+}

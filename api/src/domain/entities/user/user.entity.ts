@@ -1,3 +1,4 @@
+import { OmitType } from '@nestjs/mapped-types';
 import { User } from '@prisma/client';
 
 export class UserEntity implements User {
@@ -19,3 +20,21 @@ export class UserEntity implements User {
     this.deletedAt = user.deletedAt;
   }
 }
+
+export const userSelectedField: Record<
+  keyof Omit<UserEntity, 'password'>,
+  boolean
+> = {
+  id: true,
+  name: true,
+  email: true,
+  createdAt: true,
+  updatedAt: true,
+  deletedAt: true,
+};
+
+export class UserWithoutPasswordEntity extends OmitType(UserEntity, [
+  'password',
+]) {}
+
+export type UserRequestEntity = Record<'user', UserEntity>;

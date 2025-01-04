@@ -12,6 +12,11 @@ export const environment = {
       FROM_EMAIL: process.env.AWS_SES_FROM_EMAIL,
     },
   },
+  REDIS: {
+    URL: process.env.REDIS_URL,
+  },
+  PORT: process.env.PORT ?? 3001,
+  HOST: process.env.HOST,
   NODE_ENV: process.env.NODE_ENV,
   VERSION: process.env.npm_package_version,
 };
