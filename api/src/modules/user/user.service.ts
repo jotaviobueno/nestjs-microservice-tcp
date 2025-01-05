@@ -88,7 +88,13 @@ export class UserService {
     if (!update)
       throw new HttpException('Failed to update', HttpStatus.NOT_ACCEPTABLE);
 
-    this.notificationClient.emit('createNotification', update);
+    const notificationData = new CreateNotificationDto({
+      channel: NOTIFICATION_CHANNEL_ENUM.EMAIL,
+      to: user.email,
+      context: user,
+      template: NOTIFICATION_TEMPLATES_ENUM.USER_MAIL_UPDATED,
+    });
+    this.notificationClient.emit('createNotification', notificationData);
 
     return update;
   }
@@ -109,7 +115,13 @@ export class UserService {
     if (!remove)
       throw new HttpException('Failed to remove', HttpStatus.NOT_ACCEPTABLE);
 
-    this.notificationClient.emit('createNotification', remove);
+    const notificationData = new CreateNotificationDto({
+      channel: NOTIFICATION_CHANNEL_ENUM.EMAIL,
+      to: user.email,
+      context: user,
+      template: NOTIFICATION_TEMPLATES_ENUM.USER_MAIL_DELETED,
+    });
+    this.notificationClient.emit('createNotification', notificationData);
 
     return remove;
   }
